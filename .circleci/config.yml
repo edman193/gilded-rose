@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
 
-      # run tests!
+      # run tests
       - run:
           name: run tests
           command: |

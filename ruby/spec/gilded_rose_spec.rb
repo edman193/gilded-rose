@@ -72,7 +72,7 @@ describe GildedRose do
         .to change { items[:backstage].quality }.by(3)
     end
 
-    it 'drop "quality" of "backstage" item to 0 after the concert day' do
+    it 'drop "quality" of "backstage" item to zero after the concert day' do
       items[:backstage].sell_in = 0
       GildedRose.new(items.values).update_quality
       expect(items[:backstage].quality).to be_zero

@@ -42,6 +42,11 @@ describe GildedRose do
       items[:regular].quality = 0
       GildedRose.new(items.values).update_quality
       expect(items[:regular].quality).to be_zero
+
+      items[:regular].quality = 1
+      items[:regular].sell_in = 0
+      GildedRose.new(items.values).update_quality
+      expect(items[:regular].quality).to be_zero
     end
 
     it 'increases "quality" of "Aged Brie" and "backstage" items' do
@@ -50,10 +55,12 @@ describe GildedRose do
         .and change { items[:backstage].quality }.by(1)
     end
 
-    it 'never increases "quality" of "Aged Brie" items over 50' do
+    it 'never increases "quality" of "Aged Brie" and "backstage" items over 50' do
       items[:aged_brie].quality = 50
+      items[:backstage].quality = 50
       GildedRose.new(items.values).update_quality
       expect(items[:aged_brie].quality).to eq(50)
+      expect(items[:backstage].quality).to eq(50)
     end
 
     it 'never change "quality" of "sulfura" item' do

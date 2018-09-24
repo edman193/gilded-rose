@@ -50,4 +50,15 @@ class Item
   def update_sulfuras_hand_of_ragnaros_parameters
     true
   end
+
+  def update_conjured_parameters
+    self.sell_in -= 1
+    if sell_in < 0 && quality == 1
+      self.quality -= 1
+    elsif sell_in >= 0 && quality > 0
+      self.quality -= 2
+    elsif quality > 0
+      self.quality -= 4
+    end
+  end
 end

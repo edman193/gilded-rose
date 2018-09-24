@@ -8,7 +8,8 @@ describe GildedRose do
       regular: Item.new('foo', 11, 30),
       aged_brie: Item.new('Aged Brie', 11, 30),
       backstage: Item.new('Backstage passes to a TAFKAL80ETC concert', 11, 30),
-      sulfuras: Item.new('Sulfuras, Hand of Ragnaros', 0, 80)
+      sulfuras: Item.new('Sulfuras, Hand of Ragnaros', 0, 80),
+      conjured: Item.new('Conjured', 11, 30)
     }
   end
 
@@ -31,13 +32,13 @@ describe GildedRose do
         .to change { items[:regular].quality }.by(-1)
     end
 
-    it 'degrades "quality" of regular product twice as fast after "sell in" has passed' do
+    it 'degrades "quality" of regular item twice as fast after "sell in" has passed' do
       items[:regular].sell_in = 0
       expect { GildedRose.new(items.values).update_quality }
         .to change { items[:regular].quality }.by(-2)
     end
 
-    it 'never degrades "quality" of regular product under zero' do
+    it 'never degrades "quality" of regular item under zero' do
       items[:regular].quality = 0
       GildedRose.new(items.values).update_quality
       expect(items[:regular].quality).to be_zero
@@ -76,6 +77,23 @@ describe GildedRose do
       items[:backstage].sell_in = 0
       GildedRose.new(items.values).update_quality
       expect(items[:backstage].quality).to be_zero
+    end
+
+    it 'lowers "quality" value for conjured items' do
+      expect { GildedRose.new(items.values).update_quality }
+        .to change { items[:conjured].quality }.by(-2)
+    end
+
+    it 'degrades "quality" of conjured item twice as fast after "sell in" has passed' do
+      items[:conjured].sell_in = 0
+      expect { GildedRose.new(items.values).update_quality }
+        .to change { items[:conjured].quality }.by(-4)
+    end
+
+    it 'never degrades "quality" of conjured item under zero' do
+      items[:conjured].quality = 0
+      GildedRose.new(items.values).update_quality
+      expect(items[:conjured].quality).to be_zero
     end
   end
 end
